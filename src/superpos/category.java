@@ -122,6 +122,11 @@ public class category extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton1.setText("Delete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Edit");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -374,6 +379,38 @@ public class category extends javax.swing.JFrame {
          txtcat.setText(d1.getValueAt(selectIndex, 1).toString());
          txtstatus.setSelectedItem(d1.getValueAt(selectIndex, 2).toString());
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel d1 = (DefaultTableModel)jTable1.getModel();
+        int selectIndex = jTable1.getSelectedRow();
+        
+        int id = Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to delete the record", "Warning",JOptionPane.YES_NO_OPTION);
+
+        if (dialogResult == JOptionPane.YES_OPTION){
+        
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                con1 = DriverManager.getConnection("jdbc:mysql://localhost/pos", "root","");
+                pst = con1.prepareStatement("delete from category where id =?");
+//              Passing the information into the question marks
+                pst.setInt(1, id);;
+                pst.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Category Updated");
+                table_update();
+                txtcat.setText("");
+                txtstatus.setSelectedIndex(-1);
+                txtcat.requestFocus();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(category.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(category.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
