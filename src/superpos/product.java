@@ -477,7 +477,7 @@ public class product extends javax.swing.JFrame {
                 Class.forName("com.mysql.jdbc.Driver");
                 con1 = DriverManager.getConnection("jdbc:mysql://localhost/pos", "root","");
                 
-                pst = con1.prepareStatement("select * from brand");
+                pst = con1.prepareStatement("select p.id,p.product,p.description,c.category,b.brand,p.cost_price,p.retail_price,p.qty,barcode,p.status from product p,category c, brand b where p.cat_id = c.id and p.brand_id = b.id");
                 ResultSet rs  = pst.executeQuery();
                 
                 ResultSetMetaData rsd = rs.getMetaData();
@@ -491,8 +491,16 @@ public class product extends javax.swing.JFrame {
                     Vector v2 = new Vector();
                     for (int i = 1; i<c; i++){
                         v2.add(rs.getString("id"));
+                        v2.add(rs.getString("product"));
+                        v2.add(rs.getString("description"));
+                        v2.add(rs.getString("category"));
                         v2.add(rs.getString("brand"));
+                        v2.add(rs.getString("cost_price"));
+                        v2.add(rs.getString("retail_price"));
+                        v2.add(rs.getString("qty"));
+                        v2.add(rs.getString("barcode"));
                         v2.add(rs.getString("status"));
+                        
                     }
                     
                     d.addRow(v2);
