@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author malikata
+ * @author Malik Ata
  */
 public class product extends javax.swing.JFrame {
 
@@ -574,26 +574,46 @@ public class product extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtproActionPerformed
 
+    
+    
+//    edit button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
          DefaultTableModel d1 = (DefaultTableModel)jTable1.getModel();
          int selectIndex = jTable1.getSelectedRow();
          
         // Getting the id from the table
-         int id = Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
-         String brand = txtpro.getText();
-         String status = txtstatus.getSelectedItem().toString();
+        int id = Integer.parseInt(d1.getValueAt(selectIndex, 0).toString());
+        String product = txtpro.getText();
+        String desc = txtdesc.getText();
+        categoryItem item = (categoryItem)txtcat.getSelectedItem();
+        brandItem beitem = (brandItem)txtbrand.getSelectedItem();
+        String cprice = txtcostp.getText();
+        String rprice = txtretailp.getText();
+        String qty = txtqty.getText();
+        String barcode = txtbarcode.getText();
+      
+        
+        String status = txtstatus.getSelectedItem().toString();
+        
          
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con1 = DriverManager.getConnection("jdbc:mysql://localhost/pos", "root","");
-            pst = con1.prepareStatement("update brand set brand =?, status=? where id=?");
+            pst = con1.prepareStatement("update product set product =?, description=?, cat_id=?, brand_id =?, cost_price=?, retail_price=?, qty=?, barcode=?, status=?  where id=?");
 //            Passing the information into the question marks
-            pst.setString(1, brand);;
-            pst.setString(2, status);   
-            pst.setInt(3, id);
+            pst.setString(1, product);;
+            pst.setString(2, desc);  
+            pst.setInt(3, item.id);
+            pst.setInt(4, beitem.id);
+            pst.setString(5, cprice);
+            pst.setString(6, rprice);
+            pst.setString(7, qty);
+            pst.setString(8, barcode);
+            pst.setString(9,status);
+            pst.setInt(10,id);
             pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "brand Updated");
+            JOptionPane.showMessageDialog(null, "product Updated");
             table_update();
             txtpro.setText("");
             txtstatus.setSelectedIndex(-1);
@@ -619,6 +639,13 @@ public class product extends javax.swing.JFrame {
          
 //         position on the table to edit
          txtpro.setText(d1.getValueAt(selectIndex, 1).toString());
+         txtdesc.setText(d1.getValueAt(selectIndex, 2).toString());
+         txtcat.setSelectedItem(d1.getValueAt(selectIndex, 3).toString());
+         txtbrand.setSelectedItem(d1.getValueAt(selectIndex, 4).toString());
+         txtcostp.setText(d1.getValueAt(selectIndex, 5).toString());
+         txtretailp.setText(d1.getValueAt(selectIndex, 6).toString());
+         txtqty.setText(d1.getValueAt(selectIndex, 7).toString());
+         txtbarcode.setText(d1.getValueAt(selectIndex, 8).toString());
          txtstatus.setSelectedItem(d1.getValueAt(selectIndex, 2).toString());
     }//GEN-LAST:event_jTable1MouseClicked
 
